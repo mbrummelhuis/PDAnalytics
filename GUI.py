@@ -58,6 +58,7 @@ class AddTransaction(tk.Frame):
         entry_date.grid(row = 0, column = 1)
         transaction_date = entry_date.get()
         
+        
         #Ask for amount input (optional: tweak so it says a euro sign or smth)
         text_amount = tk.Label(self, text = "Amount")
         text_amount.grid(row = 1, column = 0)
@@ -83,32 +84,37 @@ class AddTransaction(tk.Frame):
         transaction_account = entry_account.get()
         
         #Ask for type input (credit, debit, transfer) DDL
-        text_type = tk.Label(self, text = "D/C/T")
-        text_type.grid(row = 4, column = 0)
+        text_ast = tk.Label(self, text = "D/C/T")
+        text_ast.grid(row = 4, column = 0)
         
         tkvar = tk.StringVar(master)
         choices = ['Add', 'Substract', 'Transfer']
-        entry_type = tk.OptionMenu(self,tkvar, *choices)
-        entry_type.grid(row = 4, column = 1)
+        entry_ast = tk.OptionMenu(self,tkvar, *choices)
+        entry_ast.grid(row = 4, column = 1)
+        
+        #Ask for additional comments (not necessary, don't check)
+        text_comment = tk.Label(self, text = "Comments")
+        text_comment.grid(row = 5, column = 0)
+        
+        entry_comment = tk.Entry(self, width = 50)
+        entry_comment.grid(row = 5, column = 1)
+        transaction_account = str(entry_comment.get())
         
         #Back to main menu button
         button_mainmenu = tk.Button(self, text = "Back",
                                     command = lambda: master.switch_frame(MainMenu))
-        button_mainmenu.grid(row = 5, column = 2)
-
+        button_mainmenu.grid(row = 6, column = 2)  
+        
+        #Confirm button
+        button_mainmenu = tk.Button(self, text = "Confirm")
+        button_mainmenu.grid(row = 6, column = 1)  
+        
 class TransactionList(tk.Frame):
     
     def __init__(self, master):
         tk.Frame.__init__(self, master)
         
-        
-        
         #Back to main menu button
         button_mainmenu = tk.Button(self, text = "Back",
                                     command = lambda: master.switch_frame(MainMenu))
         button_mainmenu.grid(row = 5, column = 2)
-
-
-if __name__ == "__main__":
-    app = App()
-    app.mainloop()
