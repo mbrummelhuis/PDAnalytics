@@ -26,21 +26,22 @@ class MainMenu(tk.Frame):
     def __init__(self, master):
         tk.Frame.__init__(self, master)
         
+        #Message top of the screen---------------------------------------------
         label_intro = tk.Label(self, text = "Welcome to the Personal Data Analytics dashboard!",
                                bg = "grey", fg = "black", width = "90", height = 3)
         label_intro.grid(row = 0, column = 0, columnspan = 3)
     
-        #Add transaction button
+        #Add transaction button------------------------------------------------
         button_addtransaction = tk.Button(self, text = "Add transaction", padx = 40, 
                                           command = lambda: master.switch_frame(AddTransaction))
         button_addtransaction.grid(row = 2, column = 0)
         
-        #Transaction list button
+        #Transaction list button-----------------------------------------------
         button_transactionlist = tk.Button(self, text = "Transaction list", padx = 42,
                                            command = lambda: master.switch_frame(TransactionList))
         button_transactionlist.grid(row = 2, column = 1)
         
-        #Quit button
+        #Quit button-----------------------------------------------------------
         button_quit = tk.Button(self, text = "Quit program", padx = 46, command = master.destroy)
         button_quit.grid(row = 2, column = 2)
 
@@ -89,7 +90,7 @@ class AddTransaction(tk.Frame):
         entry_account.grid(row = 3, column = 1)
         
         #Ask for type input----------------------------------------------------
-        #(credit, debit, transfer) DDL
+        #(credit, debit, transfer) DDL can make this more efficient by assigning it to an integer value.
         text_ast = tk.Label(self, text = "D/C/T")
         text_ast.grid(row = 4, column = 0)
         self.info_ast = tk.StringVar()
@@ -137,6 +138,15 @@ class AddTransaction(tk.Frame):
         
     def SaveToDatabase(self,master):
         
+        #Open database file
+        with open("db.json") as f:
+            data = json.load(f)
+        
+        #Create new transaction ID by adding one to last transaction ID
+        entries = len(data['transactions']) - 1
+        self.info_number = data['transactions'][entries]['number'] + 1
+        
+        #Create dict with all transaction data
         transaction_dict = dict([
             ("date",self.info_date.get()),
             ("amount",self.info_amount.get()),
@@ -145,18 +155,19 @@ class AddTransaction(tk.Frame):
 #            ("from_account",self.transaction_fromaccount)
             ("ast",self.info_ast.get()),
             ("comment",self.info_comment.get()),
-            ("number",None)
+            ("number",self.info_number)
             ])
         
-        print(transaction_dict)
+        #Add dictionary as json object to the array 'transactions'
+        data['transactions'].append(transaction_dict)
         
-        f = open("db.json","w")
-        json.dumps(transaction_dict)
-        f.close()
+        #Put json object back in database file
+        with open("db.json","w") as f:
+            json.dump(data,f, indent = 2)
+            
+        print("Database updated with new transaction") #Check
         
-        print("Transaction saved to database")
-        
-        master.switch_frame(AddTransaction)
+        master.switch_frame(AddTransaction) #Clear fields for new entry
         
 class TransactionList(tk.Frame):
     
