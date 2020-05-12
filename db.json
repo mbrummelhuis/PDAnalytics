@@ -17,24 +17,6 @@
       "ast": "Substract",
       "comment": "Oefening",
       "number": 1
-    },
-    {
-      "date": "10/05/2020",
-      "amount": 22.0,
-      "category": "Boodschappen",
-      "account": "ING",
-      "ast": "Substract",
-      "comment": "Oefening 2",
-      "number": 2
-    },
-    {
-      "date": "10/05/2020",
-      "amount": 40.0,
-      "category": "Eten",
-      "account": "ASN",
-      "ast": "Substract",
-      "comment": "Oefening 3",
-      "number": 3
     }
   ]
 }
